@@ -606,7 +606,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Insert Game Name here
+  m_Text: Moon Cake
 --- !u!222 &342712180
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1222,9 +1222,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1934857890}
   - {fileID: 2010603053}
   - {fileID: 1718707087}
+  - {fileID: 1934857890}
   m_Father: {fileID: 2062333278}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2248,7 +2248,7 @@ RectTransform:
   m_Children:
   - {fileID: 821422238}
   m_Father: {fileID: 937338245}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2508,7 +2508,7 @@ RectTransform:
   m_Children:
   - {fileID: 500377935}
   m_Father: {fileID: 937338245}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2719,7 +2719,7 @@ RectTransform:
   m_Children:
   - {fileID: 1408163444}
   m_Father: {fileID: 937338245}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

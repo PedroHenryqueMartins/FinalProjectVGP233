@@ -1,39 +1,14 @@
 fileFormatVersion: 2
-guid: 0dd9624550a124f49b5fa65d78883005
+guid: 6afea523e1c88af44af406aae485dbe8
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable:
   - first:
       74: -203655887218126122
     second: Idle
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Ch20_body
-    second: {fileID: 2100000, guid: 3977466deb1451d4aa70ec4d2bc04f6a, type: 2}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch20_1001_Diffuse
-    second: {fileID: 2800000, guid: 84a6cb26520426c47980778c80871471, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch20_1001_Glossiness
-    second: {fileID: 2800000, guid: 3ec02b76162eba947a3428c87ead64aa, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch20_1001_Normal
-    second: {fileID: 2800000, guid: ea712367e8efcd640872332507f1b5ae, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch20_1001_Specular
-    second: {fileID: 2800000, guid: 33e720a2d97341948a1f02ea535e26f0, type: 3}
+  externalObjects: {}
   materials:
-    materialImportMode: 2
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1

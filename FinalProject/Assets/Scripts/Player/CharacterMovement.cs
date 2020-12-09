@@ -31,13 +31,14 @@ public class CharacterMovement : MonoBehaviour
     private Vector3 _playerPosition;
 
     // Animation variables
-    Animator _animator;
+    Animator _playerAnimator;
     private float mCurrentSpeed = 0.0f;
 
     private enum PlayerState
     {
         Idle,
         Walk_Run,
+        Walk_Back,
         Jump,
         Fall,
         Attack,
@@ -71,7 +72,7 @@ public class CharacterMovement : MonoBehaviour
         health = maxplayerHP;
         dividedSpeed = 1 / moveSpeed;
 
-        _animator = GetComponent<Animator>();
+        _playerAnimator = GetComponent<Animator>();
     }
     #endregion
 
@@ -112,6 +113,11 @@ public class CharacterMovement : MonoBehaviour
         {
             mCurrentSpeed += moveSpeed * Time.deltaTime;
             _playerState = PlayerState.Walk_Run;
+        }
+        else if(Input.GetKey(KeyCode.S))
+        {
+            mCurrentSpeed += moveSpeed * Time.deltaTime;
+            _playerState = PlayerState.Walk_Back;
         }
         else
         {
@@ -183,13 +189,19 @@ public class CharacterMovement : MonoBehaviour
     #region UPDATE ANIMATION
     private void UpdateAnimation()
     {
-        if(_playerState.Equals(PlayerState.Walk_Run))
+        if (_playerState.Equals(PlayerState.Walk_Run))
         {
-            _animator.SetFloat("playerSpeed", mCurrentSpeed * dividedSpeed);
+            _playerAnimator.SetFloat("playerSpeed", mCurrentSpeed * dividedSpeed);
+            _playerAnimator.SetBool("isWalkingBack", false);
+        }
+        else if (_playerState.Equals(PlayerState.Walk_Back))
+        {
+            _playerAnimator.SetFloat("playerSpeed", mCurrentSpeed * dividedSpeed);
+            _playerAnimator.SetBool("isWalkingBack", true);
         }
         else if(_playerState.Equals(PlayerState.Fall))
         {
-            _animator.SetBool("isFalling", true);
+            _playerAnimator.SetBool("isFalling", true);
         }
     }
     #endregion
@@ -200,7 +212,7 @@ public class CharacterMovement : MonoBehaviour
         if(characterController.transform.position.y < -100)
         {
             _playerState = PlayerState.Idle;
-            _animator.SetBool("isFalling", false);
+            _playerAnimator.SetBool("isFalling", false);
             characterController.transform.position = _playerPosition;
             _mainCharacter.transform.position = _playerPosition;
         }

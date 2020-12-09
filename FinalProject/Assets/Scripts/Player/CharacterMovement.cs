@@ -24,7 +24,6 @@ public class CharacterMovement : MonoBehaviour
     bool isGrounded;
 
     public Image[] healthHUD;
-    public Text healthValue;
     GameObject gameManager;
     GameManager gm;
 
@@ -54,7 +53,7 @@ public class CharacterMovement : MonoBehaviour
         gm = gameManager.GetComponent<GameManager>();
         ServiceLocator.Register<GameManager>(gm);
 
-        _playerPosition = new Vector3(0.0f, 8.5f, 0.0f);
+        _playerPosition = gm.startPos.transform.position;
 
         _playerState = PlayerState.Idle;
     }
@@ -80,15 +79,14 @@ public class CharacterMovement : MonoBehaviour
     {
 
         UpdateLife();
-        //healthHUD.fillAmount = health / maxplayerHP;
-        //healthValue.text = health.ToString();
+        
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundRadius, groundMask);
 
         if (isGrounded && worldGravity.y < 0)
         {
             worldGravity.y = -2.0f;
-            // _animator.SetBool("isJumping", false);
+            _animator.SetBool("isJumping", false);
         }
 
         float xAxis = Input.GetAxis("Horizontal");
@@ -100,8 +98,8 @@ public class CharacterMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
+            _animator.SetBool("isJumping", true);
             worldGravity.y = Mathf.Sqrt(jumpForce * -2.0f * gravity);
-            // _animator.SetBool("isJumping", true);
         }
 
         worldGravity.y += gravity * Time.deltaTime;
@@ -145,6 +143,24 @@ public class CharacterMovement : MonoBehaviour
         {
             health -= 0.2f;
         }
+
+        if (hit.transform.CompareTag("Tools"))
+        {
+            CollectedObject();
+            hit.gameObject.SetActive(false);
+        }
+
+        if (hit.transform.CompareTag("Cake"))
+        {
+            CollectedCake();
+            hit.gameObject.SetActive(false);
+        }
+
+        if (hit.gameObject.CompareTag("SpaceShip"))
+        {
+            EnterShip();
+
+        }
     }
     #endregion
 
@@ -179,6 +195,21 @@ public class CharacterMovement : MonoBehaviour
         }
     }
     #endregion
+
+    void CollectedObject()
+    {
+        gm.CollectedTool();
+    }
+
+    void CollectedCake()
+    {
+        gm.CollectedCake();
+    }
+
+    void EnterShip()
+    {
+        gm.EnterSpaceship();
+    }
 
     #region UPDATE ANIMATION
     private void UpdateAnimation()

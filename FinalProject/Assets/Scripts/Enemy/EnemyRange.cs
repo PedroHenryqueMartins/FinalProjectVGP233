@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class EnemyRange : MonoBehaviour
 {
+    EnemyMovement enemyMovement;
+
+    private void Awake()
+    {
+        enemyMovement = GetComponent<EnemyMovement>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
-            this.transform.parent.gameObject.SendMessage("Chase");
+            enemyMovement.Chase();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        this.transform.parent.gameObject.SendMessage("Patrol");
+        enemyMovement.Patrol();
     }
 }

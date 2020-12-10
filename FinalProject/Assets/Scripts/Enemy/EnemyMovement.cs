@@ -27,13 +27,26 @@ public class EnemyMovement : MonoBehaviour
     private Animator _enemyAnimator;
     // private AudioSource audioSource;
     private bool isDeath = false;
-    private int _currentWaypoint = 0;
     private float _currentHealth = 0.0f;
     private float dividedSpeed = 0.0f;
     private float idleClipLength;
     private float deathClipLength;
     private EnemyState _enemyState;
 
+    [Range(1.0f, 10.0f)]
+    public float lookRadius = 5.0f;
+    public GameObject player;
+    Transform target;
+    private float distance = 0.0f;
+
+    #endregion
+
+    #region ON DRAW GIZMO SELECTED
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, lookRadius);
+    }
     #endregion
 
     #region AWAKE
@@ -50,6 +63,7 @@ public class EnemyMovement : MonoBehaviour
     private void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
+        target = player.transform;
 
         AnimationClip[] animations = _enemyAnimator.runtimeAnimatorController.animationClips;
         if(animations == null || animations.Length <= 0)
@@ -78,6 +92,13 @@ public class EnemyMovement : MonoBehaviour
     #region UPDATE
     private void Update()
     {
+        distance = Vector3.Distance(target.position, transform.position);
+
+        if (distance <= lookRadius)
+        {
+            Chase();
+        }
+
         UpdateAnimation();
     }
     #endregion
@@ -96,11 +117,11 @@ public class EnemyMovement : MonoBehaviour
         }
         else if (_enemyState.Equals(EnemyState.Chase))
         {
-            // _enemyAnimator.SetBool("isChasing", true);
+            ChasePlayer();
         }
         else if (_enemyState.Equals(EnemyState.Attack))
         {
-
+            AttackPlayer();
         }
     }
     #endregion
@@ -109,6 +130,8 @@ public class EnemyMovement : MonoBehaviour
     public void Patrol()
     {
         _enemyState = EnemyState.Patrol;
+        _enemyAnimator.SetBool("isAttacking", false);
+        _enemyAnimator.SetBool("isChasing", false);
         _enemyAnimator.SetBool("isPatroling", true);
     }
     #endregion
@@ -136,12 +159,25 @@ public class EnemyMovement : MonoBehaviour
     public void Chase()
     {
         _enemyState = EnemyState.Chase;
+        _enemyAnimator.SetBool("isPatroling", false);
+        _enemyAnimator.SetBool("isChasing", true);
     }
     #endregion
 
     #region CHASE PLAYER
     private void ChasePlayer()
     {
+        _agent.SetDestination(target.position);
+
+        if ((transform.position - target.position).sqrMagnitude < 3.0f * 3.0f)
+        {
+            _enemyAnimator.SetBool("isAttacking", true);
+            _enemyState = EnemyState.Attack;
+        }
+        else
+        {
+            Patrol();
+        }
         /*
         _enemyAnimator.SetBool("isChasing", true);
 
@@ -171,7 +207,7 @@ public class EnemyMovement : MonoBehaviour
     #region ATTACK PLAYER
     private void AttackPlayer()
     {
-        _enemyAnimator.SetBool("isAttacking", true);
+        
     }
     #endregion
 

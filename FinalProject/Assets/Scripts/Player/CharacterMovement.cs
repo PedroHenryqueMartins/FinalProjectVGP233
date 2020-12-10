@@ -87,7 +87,7 @@ public class CharacterMovement : MonoBehaviour
         if (isGrounded && worldGravity.y < 0)
         {
             worldGravity.y = -2.0f;
-            _animator.SetBool("isJumping", false);
+            _playerAnimator.SetBool("isJumping", false);
         }
 
         float xAxis = Input.GetAxis("Horizontal");
@@ -99,7 +99,7 @@ public class CharacterMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            _animator.SetBool("isJumping", true);
+            _playerAnimator.SetBool("isJumping", true);
             worldGravity.y = Mathf.Sqrt(jumpForce * -2.0f * gravity);
         }
 

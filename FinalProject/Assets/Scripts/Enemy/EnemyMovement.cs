@@ -1,21 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour
 {
     #region VARIABLES
-    public Animator _enemyAnimator;
-    [Range(0.01f, 1.0f)]
-    public float enemyMoveSpeed;
-    public float dividedSpeed = 0.0f;
-    public static float health;
-
-    private CharacterController _enemyController;
-    private GameObject player;
-    private float mEnemyCurrentSpeed;
-    private float maxEnemyHP;
-
+    // public AudioClip deathClip;
+    public float speed = 5.0f;
+    public float maxSpeed = 10.0f;
+    public Transform waypoint01;
+    public Transform waypoint02;
+    public float maxHealth = 100.0f;
     public enum EnemyState
     {
         Idle,
@@ -25,52 +21,114 @@ public class EnemyMovement : MonoBehaviour
         Death
     }
 
-    EnemyState _enemyState;
+    private Transform destination;
+    private NavMeshAgent _agent;
+    private WaypointManager.Path _path;
+    private Animator _enemyAnimator;
+    // private AudioSource audioSource;
+    private bool isDeath = false;
+    private int _currentWaypoint = 0;
+    private float _currentHealth = 0.0f;
+    private float dividedSpeed = 0.0f;
+    private float idleClipLength;
+    private float deathClipLength;
+    private EnemyState _enemyState;
 
     #endregion
 
     #region AWAKE
     private void Awake()
     {
-        _enemyController = GetComponent<CharacterController>();
         _enemyAnimator = GetComponent<Animator>();
+        // audioSource = GetComponent<AudioSource>();
+        _currentHealth = maxHealth;
         _enemyState = EnemyState.Patrol;
-        maxEnemyHP = 100.0f;
     }
     #endregion
 
     #region START
     private void Start()
     {
-        health = maxEnemyHP;
-        player = GameObject.FindGameObjectWithTag("Player");
+        _agent = GetComponent<NavMeshAgent>();
+
+        AnimationClip[] animations = _enemyAnimator.runtimeAnimatorController.animationClips;
+        if(animations == null || animations.Length <= 0)
+        {
+            Debug.LogError("No animations");
+            return;
+        }
+        for(int i = 0; i < animations.Length; ++i)
+        {
+            if(animations[i].name.Equals("Idle"))
+            {
+                idleClipLength = animations[i].length;
+            }
+            else if(animations[i].name.Equals("Falling Back Death"))
+            {
+                deathClipLength = animations[i].length;
+            }
+        }
+
+        _enemyAnimator.SetBool("isPatroling", true);
+        dividedSpeed = 1 / maxSpeed;
+        destination = waypoint01;
     }
     #endregion
 
     #region UPDATE
     private void Update()
     {
+        UpdateAnimation();
+    }
+    #endregion
+
+    #region UPDATE ANIMATION
+    private void UpdateAnimation()
+    {
         if(_enemyState.Equals(EnemyState.Idle))
         {
-            _enemyAnimator.SetFloat("moveSpeed", 0.0f);
+            _enemyAnimator.SetBool("isPatroling", false);
+            StartCoroutine("IdleTime");
         }
-
-        if(_enemyState.Equals(EnemyState.Patrol))
+        else if(_enemyState.Equals(EnemyState.Patrol))
         {
-            _enemyAnimator.SetFloat("moveSpeed", 0.5f);
+            PatrolArea();
         }
-
-        if (_enemyState.Equals(EnemyState.Chase))
+        else if (_enemyState.Equals(EnemyState.Chase))
         {
-            _enemyAnimator.SetFloat("moveSpeed", 1.0f);
-            ChasePlayer();
+            // _enemyAnimator.SetBool("isChasing", true);
         }
-
-        if(_enemyState.Equals(EnemyState.Attack))
+        else if (_enemyState.Equals(EnemyState.Attack))
         {
-            AttackPlayer();
+
         }
-        
+    }
+    #endregion
+
+    #region PATROL
+    public void Patrol()
+    {
+        _enemyState = EnemyState.Patrol;
+        _enemyAnimator.SetBool("isPatroling", true);
+    }
+    #endregion
+
+    #region PATOL AREA
+    private void PatrolArea()
+    {
+        if (_agent != null)
+        {
+            _agent.SetDestination(destination.position);
+            _agent.speed = maxSpeed;
+        }
+        _enemyAnimator.SetFloat("enemySpeed", _agent.velocity.magnitude * dividedSpeed * 0.5f);
+
+        if ((transform.position - destination.position).sqrMagnitude < 3.0f * 3.0f)
+        {
+            _enemyState = EnemyState.Idle;
+            _enemyAnimator.SetBool("isPatroling", false);
+            destination = destination.Equals(waypoint01) ? waypoint02 : waypoint01;
+        }
     }
     #endregion
 
@@ -81,18 +139,10 @@ public class EnemyMovement : MonoBehaviour
     }
     #endregion
 
-    #region PATROL
-    public void Patrol()
-    {
-        _enemyState = EnemyState.Idle;
-        _enemyAnimator.SetBool("isChasing", false);
-        _enemyAnimator.SetBool("isAttacking", false);
-    }
-    #endregion
-
     #region CHASE PLAYER
     private void ChasePlayer()
     {
+        /*
         _enemyAnimator.SetBool("isChasing", true);
 
         Vector3 playerPosition = player.transform.position;
@@ -106,6 +156,15 @@ public class EnemyMovement : MonoBehaviour
         {
             _enemyState = EnemyState.Attack;
         }
+        */
+    }
+    #endregion
+
+    #region IDLE TIME
+    private IEnumerator IdleTime()
+    {
+        yield return new WaitForSeconds(idleClipLength * 2.0f);
+        Patrol();
     }
     #endregion
 
@@ -116,10 +175,31 @@ public class EnemyMovement : MonoBehaviour
     }
     #endregion
 
-    #region SELF DESTROY
-    private void SelfDestroy()
+    #region RECEIVE DAMAGE
+    public void ReceiveDamage(float damage)
     {
-        Destroy(this.gameObject);
+        _currentHealth -= damage;
+        if(_currentHealth <= 0.0f)
+        {
+            StartCoroutine("Defeated");
+        }
+    }
+    #endregion
+
+    #region DEFEATED
+    public IEnumerator Defeated()
+    {
+        isDeath = true;
+        _enemyAnimator.SetBool("isDeath", isDeath);
+        yield return new WaitForSeconds(deathClipLength * 1.5f);
+        SelfDestroy(gameObject);
+    }
+    #endregion
+
+    #region SELF DESTROY
+    private void SelfDestroy(GameObject gameObject)
+    {
+        gameObject.SetActive(false);
     }
     #endregion
 }

@@ -92,6 +92,7 @@ public class CharacterMovement : MonoBehaviour
 
         float xAxis = Input.GetAxis("Horizontal");
         float zAxis = Input.GetAxis("Vertical");
+        
 
         Vector3 move = transform.right * xAxis + transform.forward * zAxis;
 
@@ -109,6 +110,7 @@ public class CharacterMovement : MonoBehaviour
         // Animation Walk / Run
         if(Input.GetKey(KeyCode.W))
         {
+            
             mCurrentSpeed += moveSpeed * Time.deltaTime;
             _playerState = PlayerState.Walk_Run;
         }
@@ -167,6 +169,13 @@ public class CharacterMovement : MonoBehaviour
             EnterShip();
 
         }
+
+        if (hit.gameObject.CompareTag("Death"))
+        {
+            _playerPosition = gm.startPos.transform.position;
+            health -= 0.5f;
+        }
+
     }
     #endregion
 

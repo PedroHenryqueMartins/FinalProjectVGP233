@@ -19,12 +19,13 @@ public class GameManager : MonoBehaviour
     int tools = 0;
     int cakeNum = 0;
 
-    public float timeRemaining = 10;
+    public float timeRemaining;
     public bool timerIsRunning = false;
     public Text timerText;
+    
 
     public static bool gameEnded = false;
-
+    bool sceneLoaded = false;
     private void Awake()
     {
         if (gameManager == null)
@@ -42,12 +43,31 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.name == "EasyLevel")
+        {
+            timerText.enabled = false;
+            timerIsRunning = false;
+        }
+        else if (scene.name == "NormalLevel")
+        {
+            timeRemaining = 600.0f;
+            timerText.enabled = true;
+            timerIsRunning = true;
+        }
+        else if (scene.name == "HardLevel")
+        {
+            timeRemaining = 300.0f;
+            timerText.enabled = true;
+            timerIsRunning = true;
+        }
+        //timerIsRunning = true;
         SpawnCollectibles();
-        timerIsRunning = true;
     }
     void Update()
     {
         CollectedObjects();
+        WinLoseCondition();
 
         if (timerIsRunning)
         {
@@ -64,13 +84,18 @@ public class GameManager : MonoBehaviour
             }
         }
 
+
     }
 
 
     void CollectedObjects()
     {
-        toolsFound.text = "Tools Found: " + tools.ToString() + " / 5";
-        cakeTxt.text = "Cake Found: " + cakeNum.ToString() + " / 1";
+        if (gameEnded == false)
+        {
+            toolsFound.text = "Tools Found: " + tools.ToString() + " / 5";
+            cakeTxt.text = "Cake Found: " + cakeNum.ToString() + " / 1";
+        }
+        
     }
 
     public void CollectedTool()
@@ -88,9 +113,13 @@ public class GameManager : MonoBehaviour
     }
     public void WinLoseCondition()
     {
-        if (gameEnded == true)
+        
+        if (gameEnded == true && sceneLoaded == false)
         {
+            timerIsRunning = false;
             SceneManager.LoadScene("LoseScreen");
+            this.enabled = false;
+            sceneLoaded = true;
         }
 
         if (tools == 5 && cakeNum == 1)
@@ -126,4 +155,5 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("WinScreen");
         }
     }
+
 }

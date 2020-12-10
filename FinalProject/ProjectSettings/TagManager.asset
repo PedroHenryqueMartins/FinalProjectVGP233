@@ -8,6 +8,7 @@ TagManager:
   - Tools
   - Cake
   - SpaceShip
+  - Death
   layers:
   - Default
   - TransparentFX

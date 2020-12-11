@@ -147,10 +147,12 @@ public class CharacterMovement : MonoBehaviour
     #region ON CONTROLLER COLLIDER HIT
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        /*
         if (hit.transform.CompareTag("Enemy"))
         {
             health -= 0.2f;
         }
+        */
 
         if (hit.transform.CompareTag("Tools"))
         {
@@ -176,6 +178,13 @@ public class CharacterMovement : MonoBehaviour
             health -= 0.5f;
         }
 
+    }
+    #endregion
+
+    #region RECEIVE DAMAGE
+    public void ReceiveDamage(float damage)
+    {
+        health -= damage;
     }
     #endregion
 
@@ -211,6 +220,8 @@ public class CharacterMovement : MonoBehaviour
     }
     #endregion
 
+    #region COLLECTED OBJECTS
+
     void CollectedObject()
     {
         gm.CollectedTool();
@@ -225,6 +236,7 @@ public class CharacterMovement : MonoBehaviour
     {
         gm.EnterSpaceship();
     }
+    #endregion
 
     #region UPDATE ANIMATION
     private void UpdateAnimation()

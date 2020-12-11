@@ -7,6 +7,7 @@ public class EnemyMovement : MonoBehaviour
 {
     #region VARIABLES
     // public AudioClip deathClip;
+    public CharacterMovement characterMovement;
     public float speed = 5.0f;
     public float maxSpeed = 10.0f;
     public Transform waypoint01;
@@ -109,6 +110,7 @@ public class EnemyMovement : MonoBehaviour
         if(_enemyState.Equals(EnemyState.Idle))
         {
             _enemyAnimator.SetBool("isPatroling", false);
+            _agent.velocity = Vector3.zero;
             StartCoroutine("IdleTime");
         }
         else if(_enemyState.Equals(EnemyState.Patrol))
@@ -118,10 +120,6 @@ public class EnemyMovement : MonoBehaviour
         else if (_enemyState.Equals(EnemyState.Chase))
         {
             ChasePlayer();
-        }
-        else if (_enemyState.Equals(EnemyState.Attack))
-        {
-            AttackPlayer();
         }
     }
     #endregion
@@ -169,30 +167,17 @@ public class EnemyMovement : MonoBehaviour
     {
         _agent.SetDestination(target.position);
 
-        if ((transform.position - target.position).sqrMagnitude < 3.0f * 3.0f)
+        if ((transform.position - target.position).sqrMagnitude < 5.0f)
         {
+            _agent.velocity = Vector3.zero;
             _enemyAnimator.SetBool("isAttacking", true);
             _enemyState = EnemyState.Attack;
+            AttackPlayer();
         }
         else
         {
             Patrol();
         }
-        /*
-        _enemyAnimator.SetBool("isChasing", true);
-
-        Vector3 playerPosition = player.transform.position;
-        Vector3 enemyPlayerDistance = playerPosition - this.transform.position;
-
-        playerPosition.y = this.transform.position.y;
-        this.transform.LookAt(playerPosition);
-        _enemyController.Move(enemyMoveSpeed * transform.TransformDirection(Vector3.forward));
-
-        if(enemyPlayerDistance.magnitude < 1.5f)
-        {
-            _enemyState = EnemyState.Attack;
-        }
-        */
     }
     #endregion
 
@@ -207,7 +192,7 @@ public class EnemyMovement : MonoBehaviour
     #region ATTACK PLAYER
     private void AttackPlayer()
     {
-        
+        characterMovement.ReceiveDamage(0.02f);
     }
     #endregion
 

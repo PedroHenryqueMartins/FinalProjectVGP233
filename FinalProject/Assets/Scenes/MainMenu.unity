@@ -553,7 +553,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &342712178
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1439,8 +1439,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 0, y: -17.8}
+  m_SizeDelta: {x: 160, y: 241.2334}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1125422777
 MonoBehaviour:
@@ -1475,7 +1475,12 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Insert instructions text here.
+  m_Text: "You can move by pressing W,A,S,D keys on your keyboard.\n\nJump by pressing
+    the \"spacebar\" key.\n\nMove the camera by moving the mouse, this will also
+    change the character position.\n\nThe objective of the game is to find the 5
+    tools to repair your spaceship and the cake. \nBe careful, as you have limited
+    time to achieve this. If you don't find everything, you will lose.\n\nHave fun
+    and enjoy exploring a bit of the moon!"
 --- !u!222 &1125422778
 CanvasRenderer:
   m_ObjectHideFlags: 0

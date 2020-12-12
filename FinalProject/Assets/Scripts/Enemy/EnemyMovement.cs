@@ -172,7 +172,6 @@ public class EnemyMovement : MonoBehaviour
 
         if ((transform.position - target.position).sqrMagnitude < 5.0f)
         {
-
             // If it is the beginning frames of the animation
             if (_enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.1 && hasHit == false)
             {
@@ -196,11 +195,6 @@ public class EnemyMovement : MonoBehaviour
             _agent.velocity = Vector3.zero;
             _enemyAnimator.SetBool("isAttacking", true);
             _enemyState = EnemyState.Attack;
-
-            _agent.velocity = Vector3.zero;
-            _enemyAnimator.SetBool("isAttacking", true);
-            _enemyState = EnemyState.Attack;
-            AttackPlayer();
         }
         else
         {

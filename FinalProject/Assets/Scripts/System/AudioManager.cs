@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -8,6 +9,9 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance = null;
 
     public AudioSource audioSource;
+
+    // Button that will be pressed
+    public List<Button> buttons;
 
     [SerializeField]
     public List<AudioClip> audioClips;
@@ -29,6 +33,12 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
+
+        // Make sure to add a listener
+        foreach(Button button in buttons)
+        {
+            button.onClick.AddListener(PlayClickSound);
+        }
     }
 
     // Play sound depending on Index
@@ -42,12 +52,8 @@ public class AudioManager : MonoBehaviour
     }
 
     // Play Sound for clicking buttons or UI elements
-    public void PlayClickSound(int index)
+    public void PlayClickSound()
     {
-        // Check that clip does exist
-        if(audioClips.Count >= 1)
-        {
-            audioSource.PlayOneShot(audioClips[0]);
-        }
+        PlaySound(0);
     }
 }

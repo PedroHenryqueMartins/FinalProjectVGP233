@@ -169,10 +169,36 @@ public class EnemyMovement : MonoBehaviour
 
         if ((transform.position - target.position).sqrMagnitude < 5.0f)
         {
+<<<<<<< HEAD
             _agent.velocity = Vector3.zero;
             _enemyAnimator.SetBool("isAttacking", true);
             _enemyState = EnemyState.Attack;
             AttackPlayer();
+=======
+            // If it is the beginning frames of the animation
+            if (_enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.1 && hasHit == false)
+            {
+                hasHit = true;
+                // Play Attack Audio
+                AudioManager.Instance.PlaySound(3);
+            }
+
+            // Else set to attack
+            if(_enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.1 && hasHit == true)
+            {
+                AttackPlayer();
+                hasHit = false;
+            }
+
+            if(_enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99)
+            {
+                hasHit = true;
+            }
+
+            _agent.velocity = Vector3.zero;
+            _enemyAnimator.SetBool("isAttacking", true);
+            _enemyState = EnemyState.Attack;
+>>>>>>> 95a2e539a57dc5fcb85675a2724b784c3fb67d36
         }
         else
         {

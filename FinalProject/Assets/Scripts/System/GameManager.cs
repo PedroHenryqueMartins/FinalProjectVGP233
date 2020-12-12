@@ -100,14 +100,7 @@ public class GameManager : MonoBehaviour
 
     public void CollectedTool()
     {
-<<<<<<< HEAD
         tools += 1;
-=======
-        // Play PickUp sound
-        AudioManager.Instance.PlaySound(2);
-        tools += 1;
-
->>>>>>> 95a2e539a57dc5fcb85675a2724b784c3fb67d36
         if (tools >= 5)
         {
             tools = 5;
@@ -116,11 +109,6 @@ public class GameManager : MonoBehaviour
 
     public void CollectedCake()
     {
-<<<<<<< HEAD
-=======
-        // Play PickUp Sound
-        AudioManager.Instance.PlaySound(2);
->>>>>>> 95a2e539a57dc5fcb85675a2724b784c3fb67d36
         cakeNum = 1;
     }
     public void WinLoseCondition()
@@ -129,11 +117,6 @@ public class GameManager : MonoBehaviour
         if (gameEnded == true && sceneLoaded == false)
         {
             timerIsRunning = false;
-<<<<<<< HEAD
-=======
-            // Play LoseScreen Sound
-            AudioManager.Instance.PlaySound(5);
->>>>>>> 95a2e539a57dc5fcb85675a2724b784c3fb67d36
             SceneManager.LoadScene("LoseScreen");
             this.enabled = false;
             sceneLoaded = true;
@@ -169,11 +152,6 @@ public class GameManager : MonoBehaviour
     {
         if (gameEnded == false)
         {
-<<<<<<< HEAD
-=======
-            // Play WinScreen Sound
-            AudioManager.Instance.PlaySound(6);
->>>>>>> 95a2e539a57dc5fcb85675a2724b784c3fb67d36
             SceneManager.LoadScene("WinScreen");
         }
     }

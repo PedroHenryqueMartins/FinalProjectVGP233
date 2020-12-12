@@ -100,7 +100,10 @@ public class GameManager : MonoBehaviour
 
     public void CollectedTool()
     {
+        // Play PickUp sound
+        AudioManager.Instance.PlaySound(2);
         tools += 1;
+
         if (tools >= 5)
         {
             tools = 5;
@@ -109,6 +112,8 @@ public class GameManager : MonoBehaviour
 
     public void CollectedCake()
     {
+        // Play PickUp Sound
+        AudioManager.Instance.PlaySound(2);
         cakeNum = 1;
     }
     public void WinLoseCondition()
@@ -117,6 +122,8 @@ public class GameManager : MonoBehaviour
         if (gameEnded == true && sceneLoaded == false)
         {
             timerIsRunning = false;
+            // Play LoseScreen Sound
+            AudioManager.Instance.PlaySound(5);
             SceneManager.LoadScene("LoseScreen");
             this.enabled = false;
             sceneLoaded = true;
@@ -152,6 +159,8 @@ public class GameManager : MonoBehaviour
     {
         if (gameEnded == false)
         {
+            // Play WinScreen Sound
+            AudioManager.Instance.PlaySound(6);
             SceneManager.LoadScene("WinScreen");
         }
     }

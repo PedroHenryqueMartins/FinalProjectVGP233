@@ -35,7 +35,7 @@ public class AudioManager : MonoBehaviour
     public void PlaySound(int index)
     {
         // Check that clip does exist
-        if(audioClips.Count >= index)
+        if(audioClips.Count >= index && !audioSource.isPlaying)
         {
             audioSource.PlayOneShot(audioClips[index]);
         }
@@ -45,9 +45,9 @@ public class AudioManager : MonoBehaviour
     public void PlayClickSound(int index)
     {
         // Check that clip does exist
-        if(audioClips.Count >= 2)
+        if(audioClips.Count >= 1)
         {
-            audioSource.PlayOneShot(audioClips[1]);
+            audioSource.PlayOneShot(audioClips[0]);
         }
     }
 }

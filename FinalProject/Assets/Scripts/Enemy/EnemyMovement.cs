@@ -162,6 +162,9 @@ public class EnemyMovement : MonoBehaviour
     }
     #endregion
 
+    // Check if the enemy has hit the player
+    private bool hasHit;
+
     #region CHASE PLAYER
     private void ChasePlayer()
     {
@@ -169,10 +172,29 @@ public class EnemyMovement : MonoBehaviour
 
         if ((transform.position - target.position).sqrMagnitude < 5.0f)
         {
+            // If it is the beginning frames of the animation
+            if (_enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.1 && hasHit == false)
+            {
+                hasHit = true;
+                // Play Attack Audio
+                AudioManager.Instance.PlaySound(3);
+            }
+
+            // Else set to attack
+            if(_enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.1 && hasHit == true)
+            {
+                AttackPlayer();
+                hasHit = false;
+            }
+
+            if(_enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99)
+            {
+                hasHit = true;
+            }
+
             _agent.velocity = Vector3.zero;
             _enemyAnimator.SetBool("isAttacking", true);
             _enemyState = EnemyState.Attack;
-            AttackPlayer();
         }
         else
         {

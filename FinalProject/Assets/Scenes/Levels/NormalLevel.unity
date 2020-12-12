@@ -14060,7 +14060,7 @@ GameObject:
   - component: {fileID: 1210105114}
   - component: {fileID: 1210105113}
   m_Layer: 0
-  m_Name: TestPlayer
+  m_Name: TestingMerges
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

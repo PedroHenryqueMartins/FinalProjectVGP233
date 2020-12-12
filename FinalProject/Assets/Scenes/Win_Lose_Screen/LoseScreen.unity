@@ -683,6 +683,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7c8ad95e8a2a084c97f94ac32e1b22d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+
+  gm: {fileID: 0}
+
 --- !u!4 &1131151774
 Transform:
   m_ObjectHideFlags: 0
@@ -870,3 +873,4 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8397286fa3ba1f2489409030f230351f, type: 3}
+

@@ -100,6 +100,12 @@ public class GameManager : MonoBehaviour
 
     public void CollectedTool()
     {
+
+        // Play PickUp sound
+        AudioManager.Instance.PlaySound(2);
+        tools += 1;
+
+
         tools += 1;
         if (tools >= 5)
         {
@@ -108,7 +114,13 @@ public class GameManager : MonoBehaviour
     }
 
     public void CollectedCake()
+    
     {
+
+        // Play PickUp Sound
+        AudioManager.Instance.PlaySound(2);
+
+
         cakeNum = 1;
     }
     public void WinLoseCondition()
@@ -117,6 +129,10 @@ public class GameManager : MonoBehaviour
         if (gameEnded == true && sceneLoaded == false)
         {
             timerIsRunning = false;
+            // Play LoseScreen Sound
+            AudioManager.Instance.PlaySound(5);
+
+
             SceneManager.LoadScene("LoseScreen");
             this.enabled = false;
             sceneLoaded = true;
@@ -125,6 +141,41 @@ public class GameManager : MonoBehaviour
         if (tools == 5 && cakeNum == 1)
         {
             spaceShip.GetComponent<BoxCollider>().enabled = true;
+
+        }
+    }
+
+    void SpawnCollectibles()
+    {
+        Instantiate(cakePrefab, cakePos.transform.position, Quaternion.identity);
+        Instantiate(spacheshipPieces[0], toolsPosition[0].transform.position, Quaternion.identity);
+        Instantiate(spacheshipPieces[1], toolsPosition[1].transform.position, Quaternion.identity);
+        Instantiate(spacheshipPieces[2], toolsPosition[2].transform.position, Quaternion.identity);
+        Instantiate(spacheshipPieces[3], toolsPosition[3].transform.position, Quaternion.identity);
+        Instantiate(spacheshipPieces[4], toolsPosition[4].transform.position, Quaternion.identity);
+    }
+
+    void DisplayTime(float timeToDisplay)
+    {
+        timeToDisplay += 1;
+
+        float min = Mathf.FloorToInt(timeToDisplay / 60);
+        float sec = Mathf.FloorToInt(timeToDisplay % 60);
+
+        timerText.text = string.Format("{0:00} : {1:00}", min, sec);
+    }
+
+    public void EnterSpaceship()
+    {
+        if (gameEnded == false)
+        {
+            // Play WinScreen Sound
+            AudioManager.Instance.PlaySound(6);
+            SceneManager.LoadScene("WinScreen");
+        }
+    }
+
+
         }
     }
 
@@ -155,5 +206,6 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("WinScreen");
         }
     }
+
 
 }

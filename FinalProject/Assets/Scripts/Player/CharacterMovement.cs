@@ -100,6 +100,10 @@ public class CharacterMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
+
+            // Play Jump Sound
+            AudioManager.Instance.PlaySound(1);
+
             _playerAnimator.SetBool("isJumping", true);
             worldGravity.y = Mathf.Sqrt(jumpForce * -2.0f * gravity);
         }
@@ -184,6 +188,10 @@ public class CharacterMovement : MonoBehaviour
     #region RECEIVE DAMAGE
     public void ReceiveDamage(float damage)
     {
+
+        // Play Damaged Audio
+        AudioManager.Instance.PlaySound(4);
+
         health -= damage;
     }
     #endregion

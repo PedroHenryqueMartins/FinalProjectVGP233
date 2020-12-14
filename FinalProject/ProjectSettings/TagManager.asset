@@ -9,6 +9,7 @@ TagManager:
   - Cake
   - SpaceShip
   - Death
+  - Services
   layers:
   - Default
   - TransparentFX

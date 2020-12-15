@@ -176,8 +176,8 @@ public class CharacterMovement : MonoBehaviour
 
         if (hit.gameObject.CompareTag("Death"))
         {
-            _playerPosition = gm.startPos.transform.position;
-            health -= 0.5f;
+            _mainCharacter.transform.position = gm.startPos.transform.position;
+            health -= 20.0f;
         }
 
     }
@@ -219,7 +219,7 @@ public class CharacterMovement : MonoBehaviour
         else 
         {
             GameManager.gameEnded = true;
-            gm.WinLoseCondition();
+            ServiceLocator.Get<GameManager>().WinLoseCondition();
         }
     }
     #endregion
@@ -228,17 +228,19 @@ public class CharacterMovement : MonoBehaviour
 
     void CollectedObject()
     {
-        gm.CollectedTool();
+        ServiceLocator.Get<GameManager>().CollectedTool();
+        
     }
 
     void CollectedCake()
     {
-        gm.CollectedCake();
+        ServiceLocator.Get<GameManager>().CollectedCake();
+        
     }
 
     void EnterShip()
     {
-        gm.EnterSpaceship();
+        ServiceLocator.Get<GameManager>().EnterSpaceship();
     }
     #endregion
 
